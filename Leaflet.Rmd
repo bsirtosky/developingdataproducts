@@ -1,0 +1,28 @@
+---
+title: "R Markdown and Leaflet"
+author: "Bryan Sirtosky"
+date: "1/28/2017"
+always_allow_html: yes
+---
+
+## Opioid Treatment Centers in Indiana
+
+Indiana has a significant opioid usage and addiction problem.  Part of the solution is
+opioid treatment centers.  Some of the challenges are (1) do we have enough opioid treatment 
+centers to handle the need and (2) are they located in such a way that we are reducing 
+the barrier that travel represents to many people as much as possible.
+```{r, echo=FALSE, eval=TRUE, message = FALSE}
+library(leaflet)
+df <- read.csv("OpioidTreatmentFacilitiesIN.csv", stringsAsFactors = FALSE)
+
+a <- rep("<a href='http://", 13)
+b <- rep("'>", 13)
+c <- rep("</a>", 13)
+
+treatSites <- paste0(a,df$website,b,df$name,c) 
+
+df %>% 
+  leaflet() %>%
+  addTiles() %>%
+  addMarkers(clusterOptions = markerClusterOptions(), popup = treatSites) 
+```
