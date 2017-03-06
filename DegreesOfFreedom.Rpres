@@ -1,0 +1,51 @@
+Degrees of Freedom
+========================================================
+author: Bryan Sirtosky
+date: March 5, 2017
+autosize: true
+font-family: 'Helvetica'
+
+Freedom
+========================================================
+It's one of the things that we as Americans cherish above all else. But...how free are we?  We have more people imprisoned than ever before.
+<div style="text-align: center; margin: 0px; padding: 0px;"><img src="US_Prison_Populations.png" style="height: 450px;" /></div>
+
+
+Incarceration in the United States
+========================================================
+People of color are also imprisoned at much higher rates than white people.
+<div style="text-align: center; margin: 0px; padding: 0px;"><img src="US_Rate_Of_Imprisonment.png" style="height: 400px;" /></div>
+
+
+Degrees of Freedom
+========================================================
+The <a href="https://bsirtosky.shinyapps.io/degrees_of_freedom/">Degrees of Freedom</a> application allows you to investigate further by comparing rates of incarceration between different countries. (<a href="https://github.com/bsirtosky/developingdataproducts">Link to repo with ui.R and server.R files</a>.)
+<div style="text-align: center; margin: 0px; padding: 0px;"><img src="Degrees_Of_Freedom.png" style="height: 350px;" /></div>
+
+
+Top Ten World Incarceration Rates
+========================================================
+left: 40%
+
+Is the current rate of incarceration in the United States consistent with that of other comparable Western countries?
+
+Use <a href="https://bsirtosky.shinyapps.io/degrees_of_freedom/">Degrees of Freedom</a> to find out!
+***
+```{r echo=FALSE}
+library(ggplot2)
+df.countries <- read.csv("WorldIncarcerationRates.csv", header = TRUE)
+df.topten <- df.countries[df.countries$Ranking <= 10, ]
+df.topten.desc  <- df.topten[order(df.topten[,1],decreasing=TRUE),]
+ggplot(data=df.topten.desc, aes(x=reorder(Country, IncarcerationRate), y=IncarcerationRate)) +
+  coord_flip()+
+  xlab(NULL)+
+  ylab("Incarceration Rate (per 100,000 people)")+
+  ylim(0,900)+
+  geom_bar(stat="identity", fill="steelblue", width=.50)+
+  geom_text(aes(label=IncarcerationRate), hjust=0, vjust=0, size=4)+
+  theme_minimal()+
+    theme(axis.title.x=element_text(margin=margin(30,0,10,0)),
+          axis.text=element_text(size=15),
+          axis.title=element_text(size=14,face="bold"))
+```
+
